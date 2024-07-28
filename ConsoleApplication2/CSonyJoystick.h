@@ -23,6 +23,8 @@
 // =================================================================================================
 // ====================================== CONSTANTS, ENUMS =========================================
 
+const int BUTTONS_NUM = 12;
+
 // =================================================================================================
 // ================================= TYPES, CLASSES, STRUCTURES ====================================
 
@@ -30,23 +32,23 @@ struct JSDATA
 {
 	LONG leftX;
 	LONG leftY;
-	LONG leftZ;
 	LONG rightX;
 	LONG rightY;
-	LONG rightZ;
-	bool HandlePressed[13];
+	LONG L2;
+	LONG R2;
+	bool HandlePressed[BUTTONS_NUM];
 	int arrowValue;
 
 	JSDATA() :
 			leftX(0),
 			leftY(0),
-			leftZ(0),
 			rightX(0),
 			rightY(0),
-			rightZ(0),
+			L2(0),
+			R2(0),
 		    arrowValue(-1)
 	{
-		for (int i=0;i<13;i++)
+		for (int i=0;i< BUTTONS_NUM;i++)
 		{
 			HandlePressed[i] = false;
 		}

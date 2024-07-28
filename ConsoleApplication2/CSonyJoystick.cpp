@@ -249,7 +249,7 @@ bool CSonyJoystick::ProcessRawInput(HRAWINPUT hRawInput)
                 {
                     if (HidP_GetUsageValue(HidP_Input, valueCaps[i].UsagePage, 0, HID_USAGE_GENERIC_Z, &value, pPreparsedData, (PCHAR)raw->data.hid.bRawData, raw->data.hid.dwSizeHid) == HIDP_STATUS_SUCCESS) 
                     {
-                        m_jsData.leftZ = value;
+                        m_jsData.rightX = value;
                     }
                     else
                     {
@@ -259,7 +259,7 @@ bool CSonyJoystick::ProcessRawInput(HRAWINPUT hRawInput)
                 {
                     if (HidP_GetUsageValue(HidP_Input, valueCaps[i].UsagePage, 0, HID_USAGE_GENERIC_RX, &value, pPreparsedData, (PCHAR)raw->data.hid.bRawData, raw->data.hid.dwSizeHid) == HIDP_STATUS_SUCCESS) 
                     {
-                        m_jsData.rightX = value;
+                        m_jsData.L2 = value;
                     }
                     else 
                     {
@@ -269,7 +269,7 @@ bool CSonyJoystick::ProcessRawInput(HRAWINPUT hRawInput)
                 {
                     if (HidP_GetUsageValue(HidP_Input, valueCaps[i].UsagePage, 0, HID_USAGE_GENERIC_RY, &value, pPreparsedData, (PCHAR)raw->data.hid.bRawData, raw->data.hid.dwSizeHid) == HIDP_STATUS_SUCCESS) 
                     {
-                        m_jsData.rightY = value;
+                        m_jsData.R2 = value;
                     }
                     else 
                     {
@@ -278,7 +278,7 @@ bool CSonyJoystick::ProcessRawInput(HRAWINPUT hRawInput)
                 else if (valueCaps[i].Range.UsageMin == HID_USAGE_GENERIC_RZ)
                 {
                     if (HidP_GetUsageValue(HidP_Input, valueCaps[i].UsagePage, 0, HID_USAGE_GENERIC_RZ, &value, pPreparsedData, (PCHAR)raw->data.hid.bRawData, raw->data.hid.dwSizeHid) == HIDP_STATUS_SUCCESS) {
-                        m_jsData.rightZ = value;
+                        m_jsData.rightY = value;
                     }
                     else 
                     {
@@ -292,7 +292,7 @@ bool CSonyJoystick::ProcessRawInput(HRAWINPUT hRawInput)
                 }
             }
 
-            for (ULONG j = 0; j < 13; j++)
+            for (ULONG j = 0; j < BUTTONS_NUM; j++)
             {
                 m_jsData.HandlePressed[j] = false;
 
@@ -370,7 +370,7 @@ HWND CSonyJoystick::InitDummyWindow()
         L"RawInputExample",
         L"Raw Input Example",
         WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, CW_USEDEFAULT, 640, 480,
+        CW_USEDEFAULT, CW_USEDEFAULT, 280, 450,
         NULL, NULL, hInstance, NULL);
 
     if (hwnd == NULL)
@@ -411,19 +411,31 @@ void CSonyJoystick::DrawTextOnDC(HDC hdc)
 {
     // Create a string with the joystick state
     TCHAR buffer[256];
-    _stprintf_s(buffer, _T("Left X: %ld Left Y: %ld Left Z: %ld\n"), m_jsData.leftX, m_jsData.leftY, m_jsData.leftZ);
+    _stprintf_s(buffer, _T("Left X: %ld"), m_jsData.leftX);
     TextOut(hdc, 10, 10, buffer, (int)_tcslen(buffer));
 
-    _stprintf_s(buffer, _T("Right X: %ld Right Y: %ld Right Z: %ld\n"), m_jsData.rightX, m_jsData.rightY, m_jsData.rightZ);
+    _stprintf_s(buffer, _T("Left Y: %ld"), m_jsData.leftY);
     TextOut(hdc, 10, 30, buffer, (int)_tcslen(buffer));
 
-    _stprintf_s(buffer, _T("Arrow: %d\n"), m_jsData.arrowValue);
+    _stprintf_s(buffer, _T("Right X: %ld"), m_jsData.rightX);
     TextOut(hdc, 10, 50, buffer, (int)_tcslen(buffer));
 
-    for (int i=0; i<13; i++)
+    _stprintf_s(buffer, _T("Right Y: %ld"), m_jsData.rightY);
+    TextOut(hdc, 10, 70, buffer, (int)_tcslen(buffer));
+
+    _stprintf_s(buffer, _T("R2: %ld"), m_jsData.R2);
+    TextOut(hdc, 10, 90, buffer, (int)_tcslen(buffer));
+
+    _stprintf_s(buffer, _T("L2: %ld "), m_jsData.L2);
+    TextOut(hdc, 10, 110, buffer, (int)_tcslen(buffer));
+
+    _stprintf_s(buffer, _T("Arrow: %d"), m_jsData.arrowValue);
+    TextOut(hdc, 10, 130, buffer, (int)_tcslen(buffer));
+
+    for (int i=0; i< BUTTONS_NUM; i++)
     {
         _stprintf_s(buffer, _T("Button Pressed: %s\n"), m_jsData.HandlePressed[i] ? _T("Yes") : _T("No"));
-        TextOut(hdc, 10, 90 + i*20, buffer, (int)_tcslen(buffer));
+        TextOut(hdc, 10, 160 + i*20, buffer, (int)_tcslen(buffer));
     }
 }
 
