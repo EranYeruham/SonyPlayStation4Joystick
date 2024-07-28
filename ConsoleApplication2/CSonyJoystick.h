@@ -13,7 +13,7 @@ struct JSDATA
 	LONG rightX;
 	LONG rightY;
 	LONG rightZ;
-	bool leftHandlePressed[13];
+	bool HandlePressed[13];
 	int arrowValue;
 
 	JSDATA() :
@@ -27,7 +27,7 @@ struct JSDATA
 	{
 		for (int i=0;i<13;i++)
 		{
-			leftHandlePressed[i] = false;
+			HandlePressed[i] = false;
 		}
 	}
 };

@@ -47,11 +47,12 @@ CSonyJoystick* m_thisClass;
 // =================================================================================================
 // ===================================== FUNCTION DEFINITIONS ======================================
 
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
+{
     switch (uMsg)
     {
-    case WM_ERASEBKGND:
-        return 1; // Prevent flickering by not erasing the background
+        case WM_ERASEBKGND:
+            return 1; // Prevent flickering by not erasing the background
 
         case WM_INPUT:
             m_thisClass->ProcessRawInput((HRAWINPUT)lParam);
@@ -166,7 +167,8 @@ bool CSonyJoystick::ProcessRawInput(HRAWINPUT hRawInput)
     }
 
     RAWINPUT* raw = (RAWINPUT*)lpb;
-    if (raw->header.dwType == RIM_TYPEHID) {
+    if (raw->header.dwType == RIM_TYPEHID) 
+    {
         UINT cbSize = 0;
 
         // Query the required buffer size for the preparsed data
@@ -178,7 +180,8 @@ bool CSonyJoystick::ProcessRawInput(HRAWINPUT hRawInput)
 
         // Allocate the buffer for the preparsed data
         PHIDP_PREPARSED_DATA pPreparsedData = (PHIDP_PREPARSED_DATA)new BYTE[cbSize];
-        if (pPreparsedData == NULL) {
+        if (pPreparsedData == NULL) 
+        {
             delete[] lpb;
             return false;
         }
@@ -291,7 +294,7 @@ bool CSonyJoystick::ProcessRawInput(HRAWINPUT hRawInput)
 
             for (ULONG j = 0; j < 13; j++)
             {
-                m_jsData.leftHandlePressed[j] = false;
+                m_jsData.HandlePressed[j] = false;
 
             }
             for (USHORT i = 0; i < numButtons; i++)
@@ -311,7 +314,7 @@ bool CSonyJoystick::ProcessRawInput(HRAWINPUT hRawInput)
                         {
                             if (usages[j])
                             { 
-                                m_jsData.leftHandlePressed[*usages - 1] = true;
+                                m_jsData.HandlePressed[*usages - 1] = true;
                                 break;
                             }
                         }
@@ -419,7 +422,7 @@ void CSonyJoystick::DrawTextOnDC(HDC hdc)
 
     for (int i=0; i<13; i++)
     {
-        _stprintf_s(buffer, _T("Button Pressed: %s\n"), m_jsData.leftHandlePressed[i] ? _T("Yes") : _T("No"));
+        _stprintf_s(buffer, _T("Button Pressed: %s\n"), m_jsData.HandlePressed[i] ? _T("Yes") : _T("No"));
         TextOut(hdc, 10, 90 + i*20, buffer, (int)_tcslen(buffer));
     }
 }
